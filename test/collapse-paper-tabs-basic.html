@@ -21,22 +21,8 @@
 
     suite('<collapse-paper-tabs>', function() {
 
-      test('defines the "author" property', function() {
-        assert.equal(myEl.author, 'Dimitri Glazkov');
-      });
-
-      test('says hello', function() {
-        assert.equal(myEl.sayHello(), 'collapse-paper-tabs says, Hello World!');
-        var greetings = myEl.sayHello('greetings Earthlings');
-        assert.equal(greetings, 'collapse-paper-tabs says, greetings Earthlings');
-      });
-
-      test('fires lasers', function(done) {
-        myEl.addEventListener('collapse-paper-tabs-lasers-success', function(event) {
-          assert.equal(event.detail.sound, 'Pew pew pew!');
-          done();
-        });
-        myEl.fireLasers();
+      test('defines the "selected" property', function() {
+        assert.equal(myEl.selected, 0);
       });
 
     });

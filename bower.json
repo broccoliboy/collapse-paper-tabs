@@ -1,8 +1,10 @@
 {
   "name": "collapse-paper-tabs",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "keywords": [
-    "seed",
+    "collapse",
+	"paper",
+	"tabs",
     "polymer",
     "web-components"
   ],
@@ -18,7 +20,8 @@
     "paper-button": "Polymer/paper-button#~0.5.5",
     "paper-tabs": "Polymer/paper-tabs#~0.5.5",
     "paper-item": "Polymer/paper-item#~0.5.5",
-    "paper-icon-button": "Polymer/paper-icon-button#~0.5.5"
+    "paper-icon-button": "Polymer/paper-icon-button#~0.5.5",
+    "core-item": "Polymer/core-item#~0.5.5"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^2.2.3"
