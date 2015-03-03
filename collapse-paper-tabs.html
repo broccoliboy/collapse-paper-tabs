@@ -1,0 +1,141 @@
+<!--
+Element providing solution to no problem in particular.
+
+##### Example
+
+    <collapse-paper-tabs>
+        <div label="item1"></div>
+        <div label="item2"></div>
+        <div label="item3"></div>
+    </collapse-paper-tabs>
+
+@element collapse-paper-tabs
+@blurb Element providing solution to no problem in particular.
+@status alpha
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../core-media-query/core-media-query.html">
+<link rel="import" href="../core-icons/core-icons.html">
+<link rel="import" href="../core-item/core-item.html">
+<link rel="import" href="../core-menu/core-menu.html">
+<link rel="import" href="../core-style/core-style.html">
+
+<link rel="import" href="../paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../paper-dropdown/paper-dropdown.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-tabs/paper-tabs.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+
+<polymer-element name="collapse-paper-tabs" attributes="query icon buttonAlign noink nobar barColor rippleColor selected valueattr">
+
+    <template>
+
+        <link rel="stylesheet" href="collapse-paper-tabs.css">
+		
+		<core-style id="collapse-paper-tabs-style">
+			paper-item::shadow #ripple {
+				color: {{rippleColor}};
+			}
+			paper-tab::shadow #ink {
+				color: {{rippleColor}};
+			}
+			paper-tabs::shadow #selectionBar {
+				background-color: {{barColor}};
+			}
+		</core-style>
+
+        <template if="{{smallScreen}}">
+		
+			<core-style ref="collapse-paper-tabs-style"></core-style>
+
+            <div id="buttonContainer" horizontal layout center>
+
+                <template if="{{buttonAlign == 'right'}}">
+                    <div flex></div>
+                </template>
+
+                <paper-menu-button id="menu" valueattr="{{valueattr}}">
+                    <paper-icon-button icon="{{icon}}"></paper-icon-button>
+                    <paper-dropdown class="dropdown" halign="{{buttonAlign || 'right'}}"  >
+                        <core-menu class="menu" selected="{{selected}}">
+                            <template repeat="{{nodeCollection}}">
+                                <paper-item>{{label}}</paper-item>
+                            </template>
+                        </core-menu>
+                    </paper-dropdown>
+                </paper-menu-button>
+
+                <template if="{{buttonAlign == 'left'}}">
+                    <div flex></div>
+                </template>
+
+            </div>
+
+        </template>
+
+        <template if="{{!smallScreen}}">
+				<core-style ref="collapse-paper-tabs-style"></core-style>
+				<paper-tabs id="tabs" valueattr="{{valueattr}}" selected="{{selected}}" noink?="{{noink}}" nobar?="{{nobar}}">
+                <template repeat="{{item in nodeCollection}}">
+                    <paper-tab label="{{item.label}}">{{item.label}}</paper-tab>
+                </template>
+            </paper-tabs>
+        </template>
+
+        <core-media-query query="{{query}}" queryMatches="{{smallScreen}}"></core-media-query>
+
+    </template>
+
+    <script>
+
+        Polymer('collapse-paper-tabs', {
+
+            selected: 0,
+
+            buttonAlign: 'right',
+
+            rippleColor: 'lightblue',
+
+            barColor: 'lightblue',
+
+            icon: 'menu',
+
+            domReady: function () {
+
+                this.childrenUpdated(this, this.childrenUpdated);
+
+            },
+
+            childrenUpdated: function (observer, mutations) {
+
+                var self = this;
+
+                this.nodeCollection = [];
+
+                [].forEach.call(this.children, collectNodes);
+
+                function collectNodes (node) {
+                    if (node.localName == 'content') {
+                        [].forEach.call(node.getDistributedNodes(), collectNodes);
+                    } else if (node.localName != null) {
+                        self.nodeCollection.push({
+                            label: node.label || node.getAttribute('label') || node.textContent,
+                            name: node.name || node.getAttribute('name'),
+                            textContent: node.textContent
+                        });
+                    }
+                }
+
+                // Monitor again
+                this.onMutation(this, this.childrenUpdated);
+
+            }
+
+        });
+
+    </script>
+
+</polymer-element>
