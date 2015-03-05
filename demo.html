@@ -1,20 +1,76 @@
 <!doctype html>
 <html lang="">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>collapse-paper-tabs Demo</title>
-    <script src="../webcomponentsjs/webcomponents.js"></script>
-    <link rel="import" href="collapse-paper-tabs.html">
-  </head>
-  <body unresolved>
-    <p>A `collapse-paper-tabs` looks like this:</p>
-    
-	<collapse-paper-tabs>
-        <div label="One"></div>
-        <div label="Two"></div>
-        <div label="Three"></div>
-    </collapse-paper-tabs>
-	
-  </body>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>collapse-paper-tabs Demo</title>
+  <script src="../webcomponentsjs/webcomponents.js"></script>
+  <link rel="import" href="collapse-paper-tabs.html">
+
+  <style>
+
+    collapse-paper-tabs.styled /deep/ #ink,
+    collapse-paper-tabs.styled /deep/ #ripple {
+      color: lightgreen;
+    }
+
+    collapse-paper-tabs.styled /deep/ #selectionBar {
+      background-color: darkgreen;
+    }
+
+
+  </style>
+
+</head>
+
+<body unresolved>
+<h2>A `collapse-paper-tabs` looks like this:</h2>
+<p>Hint: Try resizing the window.</p>
+
+<h3>query="max-width: 500px"</h3>
+<collapse-paper-tabs query="max-width: 500px">
+  <div label="One"></div>
+  <div label="Two"></div>
+  <div label="Three"></div>
+</collapse-paper-tabs>
+
+<h3>query="max-width: 600px"</h3>
+<collapse-paper-tabs query="max-width: 600px">
+  <div label="Four"></div>
+  <div label="Five"></div>
+  <div label="Six"></div>
+</collapse-paper-tabs>
+
+<h3>Custom style</h3>
+<collapse-paper-tabs class="styled" buttonAlign="left" query="max-width: 800px" inkColor="lightgreen" barColor="darkgreen">
+  <div label="Seven"></div>
+  <div label="Eight"></div>
+  <div label="Nine"></div>
+  <div label="Ten"></div>
+</collapse-paper-tabs>
+
+<h3>No bar</h3>
+<collapse-paper-tabs nobar>
+  <div label="Eleven"></div>
+  <div label="Twelve"></div>
+</collapse-paper-tabs>
+
+<h3>No ink</h3>
+<collapse-paper-tabs noink>
+  <div label="Thirteen"></div>
+  <div label="Fourteen"></div>
+</collapse-paper-tabs>
+
+<script>
+  // add event listener to each collapse-paper-tabs element that logs the 'label' attribute to the console every time
+  // a button is clicked
+  [].forEach.call(document.querySelectorAll('collapse-paper-tabs'), function (el) {
+    el.addEventListener('core-activate', function (e) {
+      console.log('core-activate', e.detail.item.getAttribute('label'));
+    });
+  });
+</script>
+
+</body>
 </html>

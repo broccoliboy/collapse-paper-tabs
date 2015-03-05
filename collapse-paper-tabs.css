@@ -19,3 +19,7 @@ paper-item {
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
+#menu /deep/ .menu {
+  margin: 0;
+}

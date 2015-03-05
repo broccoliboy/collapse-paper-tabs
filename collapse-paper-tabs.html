@@ -26,113 +26,98 @@ Paper tabs that collaps into a dropdown menu when media query is activated, such
 <link rel="import" href="../paper-item/paper-item.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 
-<polymer-element name="collapse-paper-tabs" attributes="query icon buttonAlign noink nobar barColor rippleColor selected valueattr">
+<polymer-element name="collapse-paper-tabs" attributes="query icon buttonAlign noink nobar barColor inkColor selected valueattr">
 
-    <template>
+  <template>
 
-        <link rel="stylesheet" href="collapse-paper-tabs.css">
-		
-		<core-style id="collapse-paper-tabs-style">
-			paper-item::shadow #ripple {
-				color: {{rippleColor}};
-			}
-			paper-tab::shadow #ink {
-				color: {{rippleColor}};
-			}
-			paper-tabs::shadow #selectionBar {
-				background-color: {{barColor}};
-			}
-		</core-style>
+    <link rel="stylesheet" href="collapse-paper-tabs.css">
 
-        <template if="{{smallScreen}}">
-		
-			<core-style ref="collapse-paper-tabs-style"></core-style>
+    <template if="{{smallScreen}}">
 
-            <div id="buttonContainer" horizontal layout center>
+      <div id="buttonContainer" horizontal layout center>
 
-                <template if="{{buttonAlign == 'right'}}">
-                    <div flex></div>
-                </template>
-
-                <paper-menu-button id="menu" valueattr="{{valueattr}}">
-                    <paper-icon-button icon="{{icon}}"></paper-icon-button>
-                    <paper-dropdown class="dropdown" halign="{{buttonAlign || 'right'}}"  >
-                        <core-menu class="menu" selected="{{selected}}">
-                            <template repeat="{{nodeCollection}}">
-                                <paper-item>{{label}}</paper-item>
-                            </template>
-                        </core-menu>
-                    </paper-dropdown>
-                </paper-menu-button>
-
-                <template if="{{buttonAlign == 'left'}}">
-                    <div flex></div>
-                </template>
-
-            </div>
-
+        <template if="{{buttonAlign == 'right'}}">
+          <div flex></div>
         </template>
 
-        <template if="{{!smallScreen}}">
-				<core-style ref="collapse-paper-tabs-style"></core-style>
-				<paper-tabs id="tabs" valueattr="{{valueattr}}" selected="{{selected}}" noink?="{{noink}}" nobar?="{{nobar}}">
-                <template repeat="{{item in nodeCollection}}">
-                    <paper-tab label="{{item.label}}">{{item.label}}</paper-tab>
-                </template>
-            </paper-tabs>
+        <paper-menu-button id="menu" valueattr="{{valueattr}}">
+          <paper-icon-button icon="{{icon}}"></paper-icon-button>
+          <paper-dropdown class="dropdown" halign="{{buttonAlign || 'right'}}"  >
+            <core-menu class="menu" selected="{{selected}}">
+              <template repeat="{{nodeCollection}}">
+                <paper-item label="{{label}}" noink?="{{noink != undefined}}">{{label}}</paper-item>
+              </template>
+            </core-menu>
+          </paper-dropdown>
+        </paper-menu-button>
+
+        <template if="{{buttonAlign == 'left'}}">
+          <div flex></div>
         </template>
 
-        <core-media-query query="{{query}}" queryMatches="{{smallScreen}}"></core-media-query>
+      </div>
 
     </template>
 
-    <script>
+    <template if="{{!smallScreen}}">
+      <paper-tabs id="tabs" valueattr="{{valueattr}}" selected="{{selected}}" noink?="{{noink != undefined}}" nobar?="{{nobar != undefined}}">
+        <template repeat="{{nodeCollection}}">
+          <paper-tab label="{{label}}">{{label}}</paper-tab>
+        </template>
+      </paper-tabs>
+    </template>
 
-        Polymer('collapse-paper-tabs', {
+    <core-media-query query="{{query}}" queryMatches="{{smallScreen}}"></core-media-query>
 
-            selected: 0,
+  </template>
 
-            buttonAlign: 'right',
+  <script>
 
-            rippleColor: 'lightblue',
+    Polymer('collapse-paper-tabs', {
 
-            barColor: 'lightblue',
+      selected: 0,
 
-            icon: 'menu',
+      buttonAlign: 'right',
 
-            domReady: function () {
+      inkColor: 'lightblue',
 
-                this.childrenUpdated(this, this.childrenUpdated);
+      barColor: 'lightblue',
 
-            },
+      icon: 'menu',
 
-            childrenUpdated: function (observer, mutations) {
+      domReady: function () {
 
-                var self = this;
+        this.childrenUpdated(this, this.childrenUpdated);
 
-                this.nodeCollection = [];
+      },
 
-                [].forEach.call(this.children, collectNodes);
+      childrenUpdated: function (observer, mutations) {
 
-                function collectNodes (node) {
-                    if (node.localName == 'content') {
-                        [].forEach.call(node.getDistributedNodes(), collectNodes);
-                    } else if (node.localName != null) {
-                        self.nodeCollection.push({
-                            label: node.label || node.getAttribute('label') || node.textContent,
-                            name: node.name || node.getAttribute('name'),
-                            textContent: node.textContent
-                        });
-                    }
-                }
+        var self = this;
 
-                // Monitor again
-                this.onMutation(this, this.childrenUpdated);
+        this.nodeCollection = [];
 
-            }
+        [].forEach.call(this.children, collectNodes);
 
-        });
+        function collectNodes (node) {
+          if (node.localName == 'content') {
+            [].forEach.call(node.getDistributedNodes(), collectNodes);
+          } else if (node.localName != null) {
+            self.nodeCollection.push({
+              label: node.label || node.getAttribute('label') || node.textContent,
+              name: node.name || node.getAttribute('name'),
+              textContent: node.textContent
+            });
+          }
+        }
 
-    </script>
+        // Monitor again
+        this.onMutation(this, this.childrenUpdated);
+
+      }
+
+    });
+
+  </script>
 
 </polymer-element>
