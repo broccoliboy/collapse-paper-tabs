@@ -1,3 +1,7 @@
 # collapse-paper-tabs
 
-A polymer paper-tabs that collapses into a menu button for small screens.
+A Polymer paper-tabs element that collapses into a menu button on small screens.
+
+## Installation
+
+`bower install --save broccoliboy/collapse-paper-tabs`
